@@ -48,7 +48,7 @@ namespace Yudin_back.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.Id)
@@ -80,7 +80,7 @@ namespace Yudin_back.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
             _context.Book.Add(book);
@@ -91,7 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Book.FindAsync(id);
@@ -112,7 +112,7 @@ namespace Yudin_back.Controllers
         }
 
         [HttpPut("UpdateAvailability/{id}")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateAvailability(int id, bool isAvailable)
         {
             var book = await _context.Book.FindAsync(id);
