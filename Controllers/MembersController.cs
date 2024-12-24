@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Members
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Member>>> GetMember()
         {
             return await _context.Member.ToListAsync();
@@ -30,6 +32,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Members/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Member>> GetMember(int id)
         {
             var member = await _context.Member.FindAsync(id);
@@ -45,6 +48,7 @@ namespace Yudin_back.Controllers
         // PUT: api/Members/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> PutMember(int id, Member member)
         {
             if (id != member.Id)
@@ -104,7 +108,7 @@ namespace Yudin_back.Controllers
         {
             return _context.Member.Any(e => e.Id == id);
         }
-        [HttpGet("{id}/OverdueBooks")]
+        /*[HttpGet("{id}/OverdueBooks")]
         public async Task<ActionResult<IEnumerable<Borrowing>>> GetOverdueBooks(int id)
         {
             var borrowings = await _context.Borrowing
@@ -117,7 +121,7 @@ namespace Yudin_back.Controllers
             }
 
             return borrowings;
-        }
+        }*/
 
     }
 }

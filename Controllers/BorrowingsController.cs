@@ -105,7 +105,7 @@ namespace Yudin_back.Controllers
             return _context.Borrowing.Any(e => e.Id == id);
         }
 
-        [HttpPut("{id}/Return")]
+       /* [HttpPut("{id}/Return")]
         public async Task<IActionResult> ReturnBook(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);
@@ -143,9 +143,9 @@ namespace Yudin_back.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
-        [HttpGet("{id}/CalculateFine")]
+        /*[HttpGet("{id}/CalculateFine")]
         public async Task<ActionResult<decimal>> CalculateFine(int id)
         {
             var borrowing = await _context.Borrowing.Include(b => b.Book).Include(b => b.Member).FirstOrDefaultAsync(b => b.Id == id);
@@ -157,7 +157,7 @@ namespace Yudin_back.Controllers
             // Вызов метода из модели
             decimal fine = borrowing.CalculateFine();
             return Ok(fine);
-        }
+        }*/
 
 
     }
