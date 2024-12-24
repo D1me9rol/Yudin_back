@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yudin_back.Data;
 
@@ -11,9 +12,11 @@ using Yudin_back.Data;
 namespace Yudin_back.Migrations
 {
     [DbContext(typeof(Yudin_backContext))]
-    partial class Yudin_backContextModelSnapshot : ModelSnapshot
+    [Migration("20241224181459_FixedMember")]
+    partial class FixedMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
