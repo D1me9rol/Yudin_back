@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Borrowings
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Borrowing>>> GetBorrowing()
         {
             return await _context.Borrowing.ToListAsync();
@@ -30,6 +32,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Borrowings/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Borrowing>> GetBorrowing(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);
@@ -45,6 +48,7 @@ namespace Yudin_back.Controllers
         // PUT: api/Borrowings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutBorrowing(int id, Borrowing borrowing)
         {
             if (id != borrowing.Id)
@@ -76,6 +80,7 @@ namespace Yudin_back.Controllers
         // POST: api/Borrowings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Borrowing>> PostBorrowing(Borrowing borrowing)
         {
             _context.Borrowing.Add(borrowing);
@@ -86,6 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Borrowings/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBorrowing(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);

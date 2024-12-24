@@ -24,6 +24,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Books
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Book>>> GetBook()
         {
             return await _context.Book.ToListAsync();
@@ -31,6 +32,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Books/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
             var book = await _context.Book.FindAsync(id);
@@ -46,6 +48,7 @@ namespace Yudin_back.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.Id)
@@ -77,6 +80,7 @@ namespace Yudin_back.Controllers
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
             _context.Book.Add(book);
@@ -87,6 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Book.FindAsync(id);
@@ -107,6 +112,7 @@ namespace Yudin_back.Controllers
         }
 
         [HttpPut("UpdateAvailability/{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateAvailability(int id, bool isAvailable)
         {
             var book = await _context.Book.FindAsync(id);

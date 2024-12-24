@@ -80,6 +80,7 @@ namespace Yudin_back.Controllers
         // POST: api/Members
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Member>> PostMember(Member member)
         {
             _context.Member.Add(member);
@@ -90,6 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Members/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteMember(int id)
         {
             var member = await _context.Member.FindAsync(id);
