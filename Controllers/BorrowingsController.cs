@@ -24,7 +24,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Borrowings
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Borrowing>>> GetBorrowing()
         {
             return await _context.Borrowing.ToListAsync();
@@ -32,7 +32,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Borrowings/5
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<ActionResult<Borrowing>> GetBorrowing(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);
@@ -48,7 +48,7 @@ namespace Yudin_back.Controllers
         // PUT: api/Borrowings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> PutBorrowing(int id, Borrowing borrowing)
         {
             if (id != borrowing.Id)
@@ -91,7 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Borrowings/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteBorrowing(int id)
         {
             var borrowing = await _context.Borrowing.FindAsync(id);
@@ -111,60 +111,21 @@ namespace Yudin_back.Controllers
             return _context.Borrowing.Any(e => e.Id == id);
         }
 
-       /* [HttpPut("{id}/Return")]
-        public async Task<IActionResult> ReturnBook(int id)
+        /*[HttpGet("overdue")]
+        public async Task<ActionResult<IEnumerable<Borrowing>>> GetOverdueBorrowings()
         {
-            var borrowing = await _context.Borrowing.FindAsync(id);
-            if (borrowing == null)
-            {
-                return NotFound();
-            }
-
-            borrowing.MarkAsReturned();
-
-            // Обновляем доступность книги
-            var book = await _context.Book.FindAsync(borrowing.BookId);
-            if (book != null)
-            {
-                book.IsAvailable = true;
-                _context.Entry(book).State = EntityState.Modified;
-            }
-
-            _context.Entry(borrowing).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BorrowingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var today = DateTime.Now;
+            return await _context.Borrowing.Where(b => b.ReturnDate == null && b.BorrowDate.AddDays(14) < today).ToListAsync();
         }*/
 
-        /*[HttpGet("{id}/CalculateFine")]
-        public async Task<ActionResult<decimal>> CalculateFine(int id)
+        /*[HttpGet("currentBorrowers")]
+        public async Task<ActionResult<IEnumerable<Member>>> GetCurrentBorrowers()
         {
-            var borrowing = await _context.Borrowing.Include(b => b.Book).Include(b => b.Member).FirstOrDefaultAsync(b => b.Id == id);
-            if (borrowing == null)
-            {
-                return NotFound();
-            }
-
-            // Вызов метода из модели
-            decimal fine = borrowing.CalculateFine();
-            return Ok(fine);
+            var borrowingMembers = await _context.Borrowing.Where(b => b.ReturnDate == null)
+                                                           .Select(b => b.MemberId).Distinct().ToListAsync();
+            var members = await _context.Member.Where(m => borrowingMembers.Contains(m.Id)).ToListAsync();
+            return members;
         }*/
-
 
     }
 }

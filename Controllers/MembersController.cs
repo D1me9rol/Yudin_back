@@ -32,7 +32,7 @@ namespace Yudin_back.Controllers
 
         // GET: api/Members/5
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<ActionResult<Member>> GetMember(int id)
         {
             var member = await _context.Member.FindAsync(id);
@@ -91,7 +91,7 @@ namespace Yudin_back.Controllers
 
         // DELETE: api/Members/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> DeleteMember(int id)
         {
             var member = await _context.Member.FindAsync(id);
@@ -106,24 +106,28 @@ namespace Yudin_back.Controllers
             return NoContent();
         }
 
+        [HttpGet("{id}/borrowedBooks")]
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBorrowedBooks(int id)
+        {
+            var borrowings = await _context.Borrowing.Where(b => b.MemberId == id && b.ReturnDate == null)
+                                                     .Select(b => b.BookId).ToListAsync();
+            var books = await _context.Book.Where(b => borrowings.Contains(b.Id)).ToListAsync();
+            return books;
+        }
+
+        /*[HttpGet("registeredAfter/{date}")]
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult<IEnumerable<Member>>> GetMembersRegisteredAfter(DateTime date)
+        {
+            return await _context.Member.Where(m => m.MembershipSince > date).ToListAsync();
+        }*/
+
         private bool MemberExists(int id)
         {
             return _context.Member.Any(e => e.Id == id);
         }
-        /*[HttpGet("{id}/OverdueBooks")]
-        public async Task<ActionResult<IEnumerable<Borrowing>>> GetOverdueBooks(int id)
-        {
-            var borrowings = await _context.Borrowing
-                                            .Where(b => b.MemberId == id && b.IsOverdue())
-                                            .ToListAsync();
-
-            if (borrowings == null || borrowings.Count == 0)
-            {
-                return NotFound();
-            }
-
-            return borrowings;
-        }*/
+        
 
     }
 }

@@ -143,22 +143,25 @@ namespace Yudin_back.Controllers
             return NoContent();
         }
 
-        /*[HttpPut("{id}/MarkUnavailable")]
-        public async Task<IActionResult> MarkBookAsUnavailable(int id)
+       /* [HttpGet("available")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Book>>> GetAvailableBooks()
         {
-            var book = await _context.Book.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
+            return await _context.Book.Where(b => b.IsAvailable).ToListAsync();
+        }*/
 
-            // Вызов метода из модели
-            book.MarkAsUnavailable();
+        [HttpGet("searchByAuthor/{author}")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByAuthor(string author)
+        {
+            return await _context.Book.Where(b => b.Author.Contains(author)).ToListAsync();
+        }
 
-            _context.Entry(book).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+       /* [HttpGet("publishedBetween/{startYear}/{endYear}")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByYearRange(int startYear, int endYear)
+        {
+            return await _context.Book.Where(b => b.Year >= startYear && b.Year <= endYear).ToListAsync();
         }*/
 
     }
