@@ -10,11 +10,8 @@ namespace Yudin_back.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime MembershipSince { get; set; }
-        public List<Borrowing> Borrowings { get; set; } = new();
+        public List<int> Books{ get; set; } = new();
 
-        public int GetMembershipDuration()
-        {
-            return (DateTime.Now - MembershipSince).Days;
-        }
+        public List<int> BorrowedBookIds { get; set; } = new List<int>();
     }
 }
